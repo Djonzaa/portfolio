@@ -25,7 +25,8 @@ Describe the resource here.
 - Integrated fines system
 - In-game logs
 - Discord logs
-- 
+- Integrated jail system.
+- Much more
 
 ## Requirements
 
