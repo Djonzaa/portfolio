@@ -64,7 +64,7 @@ Explain the available configuration options.
 ```lua
 Config = {}
 
-Config.RequireMDTItem = true
+Config.RequireMDTItem = true dasdasdasdasd
 Config.MDTItem = 'policemdt'
 Config.OpenCommand = 'mdt'
 Config.OpenKey = 'F6'
