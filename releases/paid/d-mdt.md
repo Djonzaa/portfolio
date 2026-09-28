@@ -1,10 +1,12 @@
 # Resource Name
 
-> Premium Djonza Development resource.
+> Advanced MDT/CAD system
 
 ## Overview
 
-Describe the resource here.
+Advanced MDT/CAD SYSTEM, built to provide everything for police officers in one resource
+
+### The resource is intended for a Qbox server. Job, grade, character and duty information is read through Qbox.
 
 ## Features
 
@@ -25,7 +27,7 @@ Describe the resource here.
 - Integrated fines system
 - In-game logs
 - Discord logs
-- Integrated jail system.
+- Integrated jail system
 - Much more
 
 ## Requirements
@@ -55,10 +57,8 @@ Add required SQL files, if applicable.
 Add the resource to your `server.cfg`:
 
 ```cfg
-ensure d-mdt
+ensure resource_name
 ```
-
-### Do not rename the resource, otherwise it won't work
 
 ## Configuration
 
@@ -66,27 +66,25 @@ ensure d-mdt
 ```lua
 Config = {}
 
-Config.RequireMDTItem = true -- require item to open MDT
-Config.MDTItem = 'policemdt' -- item name if RequireMDTItem = true
-Config.OpenCommand = 'mdt' -- open mdt command
-Config.OpenKey = 'F6' -- Open mdt key
-Config.RequireDuty = true -- Require police duty to open mdt
-Config.AdminMinGrade = 4 -- Minimum grade to manage adminsitration, and officer permissions
-Config.DefaultPatrolCapacity = 4 -- Default capacity for police patrol
-Config.MaxPatrolCapacity = 8 -- Maximum officers allowed in a single patrol
+Config.Locale = 'en'
 
-```
 
-```lua 
-Config.AllowedJobs = { -- allowed jobs to use mdt
+Config.RequireMDTItem = true
+Config.MDTItem = 'policemdt'
+
+Config.OpenCommand = 'mdt'
+Config.OpenKey = 'F6'
+Config.RequireDuty = true
+Config.AdminMinGrade = 4
+Config.DefaultPatrolCapacity = 4
+Config.MaxPatrolCapacity = 8
+
+Config.AllowedJobs = {
     police = true,
     sheriff = true
 }
 
-```
-
-```lua 
-Config.Permissions = { -- minimum grade for each 
+Config.Permissions = {
     createPatrol = 0,
     joinPatrol = 0,
     leavePatrol = 0,
@@ -143,40 +141,47 @@ Config.Permissions = { -- minimum grade for each
     issueFines = 0,
     viewCitizenLicenses = 0,
     manageCitizenLicenses = 2,
-    clearArchives = 4
+    clearArchives = 4,
+    sendToJail = 2
 }
-```
 
-```lua
-Config.PatrolStatuses = { 
+Config.Jail = {
+    Enabled = true,
+    Resource = 'auto',
+    DefaultMinutes = 30,
+    MaxMinutes = 10000,
+    RequireOnlineTarget = true,
+    FallbackEvent = 'police:client:SendToJail',
+    CompletionCheckInterval = 15000,
+    XTPrisonEvent = 'police:server:JailPlayer'
+}
+
+
+Config.PatrolStatuses = {
     available = 'Available',
     patrol = 'In Patrol',
     call = 'On Call',
     pursuit = 'In Pursuit',
     breaktime = 'On Break'
 }
-```
 
-```lua 
+
 Config.BadgeStatuses = {
     active = 'Active',
     suspended = 'Suspended',
     revoked = 'Revoked',
     lost = 'Lost'
 }
-```
 
-```lua 
-Config.DefaultDepartments = { -- Default police departments, manageable through ingame menu
+Config.DefaultDepartments = {
     patrol = 'Patrol Division',
     traffic = 'Traffic Division',
     detectives = 'Detectives',
     swat = 'Special Operations',
     command = 'Command'
 }
-```
 
-```lua
+
 Config.WarrantStatuses = {
     active = true,
     served = true,
@@ -198,18 +203,14 @@ Config.VehicleWarrantTypes = {
     inspection = true,
     seize = true
 }
-```
 
-```lua
+
 Config.ReportStatuses = {
     open = true,
     under_review = true,
     closed = true
 }
 
-```
-
-```lua
 Config.ReportCategories = {
     general = 'General Report',
     arrest = 'Arrest',
@@ -219,29 +220,23 @@ Config.ReportCategories = {
     incident = 'Incident'
 }
 
-```
 
-```lua
 Config.SearchLimits = {
-    citizens = 30,
-    vehicles = 30,
+    citizens = 50,
+    vehicles = 50,
     minimumQueryLength = 2
 }
-```
 
-```lua
 Config.VehicleStates = {
     [0] = 'Out of Garage',
     [1] = 'In Garage',
     [2] = 'Impounded'
 }
-```
 
-```lua
-Config.QboxPlayersTable = 'players' -- Qbox character table. Default Qbox installation uses `players`.
-```
 
-```lua
+-- Qbox character table. Default Qbox installation uses `players`.
+Config.QboxPlayersTable = 'players'
+
 Config.EvidenceTypes = {
     photo = true, weapon = true, item = true, document = true,
     biological = true, digital = true, other = true
@@ -250,9 +245,7 @@ Config.EvidenceStatuses = {
     collected = true, analysis = true, stored = true,
     released = true, destroyed = true
 }
-```
 
-```lua
 Config.CADPriorities = {
     low = 'Low',
     normal = 'Normal',
@@ -279,7 +272,7 @@ Config.Dispatch = {
     OnSceneDistance = 55.0,
     OnSceneCheckInterval = 1500,
     AutoGunshot = true,
-    GunshotCooldown = 0,
+    GunshotCooldown = 2000,
     IgnorePoliceGunshots = false,
     AutoFight = true,
     FightCooldown = 0,
@@ -292,14 +285,14 @@ Config.Dispatch = {
         shooting = 'urgent',
         fight = 'high',
         drug_sale = 'high',
+        theft = 'normal',
         illegal_location = 'normal',
         citizen_911 = 'high'
     }
 }
-```
 
-```lua
-Config.Panic = { -- Police panic button
+
+Config.Panic = {
     Command = 'panic',
     Key = 'F10',
     Cooldown = 15000,
@@ -307,19 +300,16 @@ Config.Panic = { -- Police panic button
     Title = 'PANIC ALARM',
     Description = 'An officer activated the panic alarm and requires immediate assistance.'
 }
-```
 
-```lua
-Config.AdminDefaults = { -- Manageable through in game menu 
+Config.AdminDefaults = {
     dispatchSound = true,
     dispatchDuration = 15000,
     panicSound = true,
     panicDuration = 20000
 }
-```
 
-```lua
-Config.CommandCenter = { -- In game command center, police gps
+
+Config.CommandCenter = {
     GPSItem = 'policegps',
     UpdateInterval = 1500,
     StaleAfter = 6000,
@@ -330,8 +320,8 @@ Config.CommandCenter = { -- In game command center, police gps
     MinY = -4500.0,
     MaxY = 8500.0
 }
-```
-```lua
+
+
 Config.UI = {
     Language = 'en',
     EnableAnimations = true,
@@ -360,10 +350,9 @@ Config.UI = {
         PanicSoundEnabled = true
     }
 }
-```
 
-```lua
-Config.UnitStatuses = { -- Officer status, set through in game menu
+
+Config.UnitStatuses = {
     Default = 'available',
     PersistUntilRestart = true,
     Options = {
@@ -373,13 +362,12 @@ Config.UnitStatuses = { -- Officer status, set through in game menu
         on_scene = { code = '10-23', label = 'On Scene', description = 'At the incident location', color = 'cyan' },
         pursuit = { code = '10-80', label = 'In Pursuit', description = 'Vehicle or foot pursuit', color = 'red' },
         busy = { code = '10-6', label = 'Busy', description = 'Busy unless urgent', color = 'orange' },
-        break_status = { code = '10-42', label = 'On Break', description = 'Temporarily unavailable', color = 'purple' },
+        break_status = { code = '10-42', label = 'On Break', description = 'Temporarily unavailable', color = 'gray' },
         emergency = { code = '10-33', label = 'Emergency', description = 'Emergency radio traffic', color = 'red' }
     }
 }
-```
 
-```lua
+
 Config.Webhooks = {
     Enabled = false,
     DiscordWebhooks = false,
@@ -405,24 +393,88 @@ Config.Webhooks = {
     UnitStatus = '',
     Permissions = ''
 }
-```
 
-```lua
 Config.Logging = {
     DatabaseAudit = true,
-    DiscordWebhooks = false, -- set to true, to use Config.Webhooks.
+    DiscordWebhooks = false,
     WebhookDebug = true,
     IncludeOldValue = true,
     IncludeNewValue = true,
     MaxWebhookFieldLength = 900
 }
+
+Config.Integrations = {
+    Core = 'qbox',
+    Inventory = 'ox_inventory', -- ox_inventory, ps-inventory, qb-inventory, custom
+    Identity = 'auto', -- qbx_idcard, um-idcard, dds-identification, custom, auto
+    Jail = 'xt-prison', -- xt-prison, auto, custom
+    Fines = 'mdt-integrated', -- mdt-integrated, qbx-police, qb_policejob, custom
+    Notifications = 'ox_lib',
+    Target = 'ox_target',
+    Database = 'oxmysql',
+    Dispatch = 'internal'
+}
+
+Config.Identity = {
+    ItemNames = {
+        'id_card', 'driver_license', 'weaponlicense', 'lawyerpass',
+        'police_badge', 'identification_card', 'drivers_license', 'weapon_license'
+    },
+    Providers = { 'qbx_idcard', 'um-idcard', 'dds-identification', 'custom' },
+    PreferItemMetadata = true
+}
+
+Config.Custom = {
+    Identity = {
+        GetMugshot = nil,
+        GetCardData = nil
+    },
+    Inventory = {
+        GetItemCount = nil
+    },
+    Jail = {
+        SendToJail = nil
+    },
+    Fines = {
+        GetCatalog = nil,
+        SaveCatalog = nil,
+        DeleteCatalog = nil,
+        Issue = nil,
+        GetCitizenFines = nil
+    }
+}
+
+Config.Badges = {
+    Enabled = true,
+    Item = 'police_badge',
+    ShowDistance = 2.5,
+    AutoSync = false,
+    RemoveItemOnSuspension = true,
+    IssueRequiresChief = true
+}
+
+Config.Theme = {
+    Preset = 'midnight',
+    Accent = '#1789e8',
+    AccentSecondary = '#32c5ff',
+    Success = '#43d39e',
+    Warning = '#f5b84b',
+    Danger = '#ff5f72',
+    Info = '#56b4ff',
+    Radius = 14,
+    Compact = false,
+    Glass = true,
+    Animations = true,
+    Glow = true
+}
+
 ```
 
 ## Commands
 
 | Command | Permission | Description |
 |---|---|---|
-| `Config.OpenCommand 'Config.AllowedJobs'` | Open mdt |
+| `Config.OpenCommand'` | Open mdt | | Open police MDT |
 
 | manage in config.lua |
 
