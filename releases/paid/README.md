@@ -8,7 +8,7 @@ Each product has its own documentation covering installation, configuration, dep
 
 ## Available Releases
 
-> Add your paid resources here.
+> d-mdt
 
 ### Adding a new paid resource
 
