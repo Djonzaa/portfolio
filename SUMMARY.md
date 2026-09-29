@@ -5,7 +5,7 @@
 ## Releases
 
 - [Paid Releases](releases/paid/README.md)
-  - [MDT/CAD](releases/paid/TEMPLATE.md)
+  - [MDT/CAD](releases/paid/d-mdt.md)
 - [Free Releases](releases/free/README.md)
   - [Free Release Template](releases/free/TEMPLATE.md)
 
